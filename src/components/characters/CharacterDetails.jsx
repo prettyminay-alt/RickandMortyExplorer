@@ -1,8 +1,8 @@
-import { ArrowLeft, CalendarRange, Heart, MapPin, ShieldCheck, UserRound } from 'lucide-react'
+import { ArrowLeft, CalendarRange, ExternalLink, Heart, MapPin, ShieldCheck, UserRound } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import FavoriteButton from './FavoriteButton'
 
-export default function CharacterDetails({ character, episodes = [] }) {
+export default function CharacterDetails({ character, episodes = [], episodesError = '', onRetryEpisodes }) {
   if (!character) {
     return null
   }
@@ -35,6 +35,10 @@ export default function CharacterDetails({ character, episodes = [] }) {
               <strong>{character.species}</strong>
             </div>
             <div>
+              <span>Type</span>
+              <strong>{character.type || 'Not specified'}</strong>
+            </div>
+            <div>
               <span>Gender</span>
               <strong>{character.gender}</strong>
             </div>
@@ -44,7 +48,11 @@ export default function CharacterDetails({ character, episodes = [] }) {
             <div><UserRound size={16} /><span>Origin:</span> {character.origin?.name || 'Unknown'}</div>
             <div><MapPin size={16} /><span>Current location:</span> {character.location?.name || 'Unknown'}</div>
             <div><CalendarRange size={16} /><span>Episodes:</span> {episodes.length}</div>
-            <div><ShieldCheck size={16} /><span>Species tag:</span> {character.species}</div>
+            <div>
+              <ShieldCheck size={16} />
+              <span>Created:</span>
+              {character.created ? new Date(character.created).toLocaleDateString() : 'Unknown'}
+            </div>
           </div>
 
           <div className="detail-actions">
@@ -52,6 +60,10 @@ export default function CharacterDetails({ character, episodes = [] }) {
               <ArrowLeft size={16} />
               Back to Explorer
             </Link>
+            <a className="secondary-button back-link" href={character.url} target="_blank" rel="noreferrer">
+              <ExternalLink size={16} />
+              API record
+            </a>
           </div>
         </div>
       </div>
@@ -66,12 +78,24 @@ export default function CharacterDetails({ character, episodes = [] }) {
         </div>
 
         <div className="episode-list">
-          {episodes.length ? (
+          {episodesError ? (
+            <div className="episode-error" role="alert">
+              <p>{episodesError}</p>
+              {onRetryEpisodes ? (
+                <button type="button" className="secondary-button" onClick={onRetryEpisodes}>
+                  Retry episodes
+                </button>
+              ) : null}
+            </div>
+          ) : episodes.length ? (
             episodes.map((episode) => (
               <div key={episode.id} className="episode-item">
                 <strong>{episode.episode}</strong>
                 <span>{episode.name}</span>
                 <small>{episode.air_date}</small>
+                <a href={episode.url} target="_blank" rel="noreferrer">
+                  View API record <ExternalLink size={14} />
+                </a>
               </div>
             ))
           ) : (

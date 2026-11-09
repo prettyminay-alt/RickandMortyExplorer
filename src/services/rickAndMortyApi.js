@@ -45,10 +45,23 @@ export async function getCharacters(params = {}) {
 }
 
 export async function getCharacterById(id) {
-  const response = await fetch(`${API_BASE}/character/${id}`)
+  const characterId = Number(id)
+
+  if (!Number.isSafeInteger(characterId) || characterId < 1) {
+    const error = new Error('Enter a valid positive character ID.')
+    error.status = 404
+    throw error
+  }
+
+  const response = await fetch(`${API_BASE}/character/${characterId}`)
 
   if (!response.ok) {
-    throw new Error(`Character request failed with status ${response.status}`)
+    const message = response.status === 404
+      ? 'This character could not be found. Check the ID or return to the Explorer.'
+      : `Character request failed with status ${response.status}`
+    const error = new Error(message)
+    error.status = response.status
+    throw error
   }
 
   return response.json()
@@ -59,7 +72,7 @@ export async function getMultipleCharacters(ids = []) {
     return []
   }
 
-  const uniqueIds = [...new Set(ids.filter(Boolean).map(Number))]
+  const uniqueIds = [...new Set(ids.map(Number).filter((id) => Number.isSafeInteger(id) && id > 0))]
 
   if (uniqueIds.length === 0) {
     return []
@@ -80,7 +93,7 @@ export async function getEpisodes(ids = []) {
     return []
   }
 
-  const uniqueIds = [...new Set(ids.filter(Boolean).map(Number))]
+  const uniqueIds = [...new Set(ids.map(Number).filter((id) => Number.isSafeInteger(id) && id > 0))]
 
   if (uniqueIds.length === 0) {
     return []

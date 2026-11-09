@@ -11,8 +11,10 @@ export default function CharacterPage() {
   const navigate = useNavigate()
   const [character, setCharacter] = useState(null)
   const [episodes, setEpisodes] = useState([])
+  const [episodesError, setEpisodesError] = useState('')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [notFound, setNotFound] = useState(false)
   const [retryKey, setRetryKey] = useState(0)
 
   useEffect(() => {
@@ -21,6 +23,10 @@ export default function CharacterPage() {
     const fetchCharacter = async () => {
       setLoading(true)
       setError('')
+      setEpisodesError('')
+      setNotFound(false)
+      setCharacter(null)
+      setEpisodes([])
 
       try {
         const data = await getCharacterById(id)
@@ -32,10 +38,15 @@ export default function CharacterPage() {
         setCharacter(data)
 
         const episodeIds = (data.episode || []).map((url) => Number(url.split('/').at(-1))).filter(Boolean)
-        const episodeData = await getEpisodes(episodeIds)
-
-        if (isMounted) {
-          setEpisodes(episodeData)
+        try {
+          const episodeData = await getEpisodes(episodeIds)
+          if (isMounted) {
+            setEpisodes(episodeData)
+          }
+        } catch (episodeError) {
+          if (isMounted) {
+            setEpisodesError(episodeError.message || 'Unable to load episode information.')
+          }
         }
       } catch (fetchError) {
         if (!isMounted) {
@@ -44,7 +55,11 @@ export default function CharacterPage() {
 
         setCharacter(null)
         setEpisodes([])
-        setError(fetchError.message || 'Unable to load character details.')
+        if (fetchError.status === 404) {
+          setNotFound(true)
+        } else {
+          setError(fetchError.message || 'Unable to load character details.')
+        }
       } finally {
         if (isMounted) {
           setLoading(false)
@@ -67,6 +82,17 @@ export default function CharacterPage() {
     return <ErrorMessage message={error} onRetry={() => setRetryKey((current) => current + 1)} />
   }
 
+  if (notFound) {
+    return (
+      <EmptyState
+        title="Character not found"
+        message="This character could not be found. Check the ID or return to the Explorer."
+        actionLabel="Return home"
+        onAction={() => navigate('/')}
+      />
+    )
+  }
+
   if (!character) {
     return (
       <EmptyState
@@ -78,5 +104,12 @@ export default function CharacterPage() {
     )
   }
 
-  return <CharacterDetails character={character} episodes={episodes} />
+  return (
+    <CharacterDetails
+      character={character}
+      episodes={episodes}
+      episodesError={episodesError}
+      onRetryEpisodes={() => setRetryKey((current) => current + 1)}
+    />
+  )
 }

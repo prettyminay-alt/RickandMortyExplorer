@@ -1,7 +1,7 @@
 # Rick and Morty Explorer
 
 ## Project Overview
-Rick and Morty Explorer is a responsive React single-page application that lets users browse, search, filter, and favorite characters from the official Rick and Morty public REST API. The app is designed with a dark sci-fi dashboard aesthetic and includes a dedicated character detail experience and persistent favorites system.
+Rick and Morty Explorer is a responsive React single-page application that lets users browse, search, filter, and favorite characters from the official Rick and Morty public REST API. The app is designed with a dark sci-fi dashboard aesthetic and includes a dedicated character detail experience and persistent favorites system. The complete catalog is browsable through API pagination; the app fetches one page at a time instead of loading the entire dataset into the browser.
 
 ## Objectives
 - Explore the Rick and Morty universe through a clean, interactive dashboard
@@ -16,8 +16,10 @@ Rick and Morty Explorer is a responsive React single-page application that lets 
 - Client-side sorting on the current page of results
 - API-based pagination controls
 - Character detail page with episode metadata
+- Character and episode source API records linked from the detail view
 - Favorites tracking with localStorage persistence
 - Responsive layout for desktop, tablet, and mobile devices
+- Loading, retryable error, and empty-result states
 
 ## Technologies Used
 - React
@@ -32,9 +34,12 @@ Rick and Morty Explorer is a responsive React single-page application that lets 
 ## External API
 - Official API: https://rickandmortyapi.com/api
 - Documentation: https://rickandmortyapi.com/documentation
+- Characters: `GET /character`
+- Character details: `GET /character/{id}`
+- Episodes: `GET /episode/{id}` (multiple episode IDs are fetched together)
 
 ## Application Screenshots
-Screenshots of the Explorer, character profile, and favorites views can be added here after capture.
+The Explorer, character profile, and favorites views are available in the running application. Add captured screenshots to this section when preparing the final repository presentation.
 
 ## Functional Requirements
 - **API data:** Character and episode data are retrieved from the public Rick and Morty API with `fetch` and `async`/`await`.

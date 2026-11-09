@@ -483,7 +483,7 @@
 
 .details-stats {
   display: grid;
-  grid-template-columns: repeat(4, minmax(100px, 1fr));
+  grid-template-columns: repeat(5, minmax(100px, 1fr));
   gap: 0.8rem;
 }
 
@@ -580,6 +580,27 @@
 
 .episode-item small {
   color: var(--muted);
+}
+
+.episode-item a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  width: fit-content;
+  margin-top: 0.3rem;
+  color: var(--cyan);
+  font-size: 0.8rem;
+}
+
+.episode-error {
+  display: grid;
+  justify-items: start;
+  gap: 0.8rem;
+  padding: 1rem;
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  border-radius: 14px;
+  background: rgba(248, 113, 113, 0.08);
+  color: #fecaca;
 }
 
 .favorites-page,
