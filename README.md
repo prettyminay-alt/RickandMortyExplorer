@@ -108,7 +108,7 @@ The project follows a feature-branch workflow:
 6. Keep main stable and functional
 
 ## GitHub Setup
-The project repository is `https://github.com/prettyminay-alt/RickandMortyExplorer`. Work on feature branches and submit pull requests into `main`; do not commit directly to `main`.
+The public project repository is [RickandMortyExplorer](https://github.com/prettyminay-alt/RickandMortyExplorer). The repository name shown in the first reference screenshot (`RickandMortyApi`) is different and returns 404; use the `RickandMortyExplorer` URL. Work on feature branches and submit pull requests into `main`; do not commit directly to `main`.
 
 To push a feature branch:
 ```bash
