@@ -1,14 +1,28 @@
 const API_BASE = 'https://rickandmortyapi.com/api'
 
+function normalizeFilterValue(value) {
+  if (value === undefined || value === null || value === '' || value === 'all') {
+    return undefined
+  }
+
+  if (typeof value === 'string') {
+    return value.trim()
+  }
+
+  return value
+}
+
 function buildQueryString(params = {}) {
   const searchParams = new URLSearchParams()
 
   Object.entries(params).forEach(([key, value]) => {
-    if (value === undefined || value === null || value === '' || value === 'all') {
+    const normalizedValue = normalizeFilterValue(value)
+
+    if (normalizedValue === undefined) {
       return
     }
 
-    searchParams.append(key, String(value))
+    searchParams.append(key, String(normalizedValue))
   })
 
   const queryString = searchParams.toString()
@@ -51,17 +65,14 @@ export async function getMultipleCharacters(ids = []) {
     return []
   }
 
-  const results = await Promise.all(
-    uniqueIds.map(async (id) => {
-      try {
-        return await getCharacterById(id)
-      } catch {
-        return null
-      }
-    }),
-  )
+  const response = await fetch(`${API_BASE}/character/${uniqueIds.join(',')}`)
 
-  return results.filter(Boolean)
+  if (!response.ok) {
+    throw new Error(`Characters request failed with status ${response.status}`)
+  }
+
+  const data = await response.json()
+  return Array.isArray(data) ? data : [data]
 }
 
 export async function getEpisodes(ids = []) {

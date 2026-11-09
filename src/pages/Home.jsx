@@ -28,6 +28,7 @@ export default function Home() {
   const [gender, setGender] = useState('all')
   const [sortBy, setSortBy] = useState('id-asc')
   const [page, setPage] = useState(1)
+  const [refreshKey, setRefreshKey] = useState(0)
 
   useEffect(() => {
     let isMounted = true
@@ -39,9 +40,9 @@ export default function Home() {
       try {
         const response = await getCharacters({
           name: searchTerm,
-          status: status === 'all' ? undefined : status,
+          status: status === 'all' ? undefined : status.toLowerCase(),
           species: species === 'all' ? undefined : species,
-          gender: gender === 'all' ? undefined : gender,
+          gender: gender === 'all' ? undefined : gender.toLowerCase(),
           page,
         })
 
@@ -71,7 +72,7 @@ export default function Home() {
     return () => {
       isMounted = false
     }
-  }, [page, searchTerm, status, species, gender])
+  }, [page, searchTerm, status, species, gender, refreshKey])
 
   const sortedCharacters = useMemo(() => {
     const current = [...characters]
@@ -177,7 +178,7 @@ export default function Home() {
       {loading ? (
         <Loading message="Loading interdimensional profiles..." />
       ) : error ? (
-        <ErrorMessage message={error} onRetry={() => setSearchTerm(searchTerm)} />
+        <ErrorMessage message={error} onRetry={() => setRefreshKey((current) => current + 1)} />
       ) : sortedCharacters.length === 0 ? (
         <EmptyState
           title="No matching characters found"

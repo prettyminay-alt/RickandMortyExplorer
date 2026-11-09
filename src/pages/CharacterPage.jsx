@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import CharacterDetails from '../components/characters/CharacterDetails'
 import EmptyState from '../components/common/EmptyState'
 import ErrorMessage from '../components/common/ErrorMessage'
@@ -8,10 +8,12 @@ import { getCharacterById, getEpisodes } from '../services/rickAndMortyApi'
 
 export default function CharacterPage() {
   const { id } = useParams()
+  const navigate = useNavigate()
   const [character, setCharacter] = useState(null)
   const [episodes, setEpisodes] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [retryKey, setRetryKey] = useState(0)
 
   useEffect(() => {
     let isMounted = true
@@ -55,14 +57,14 @@ export default function CharacterPage() {
     return () => {
       isMounted = false
     }
-  }, [id])
+  }, [id, retryKey])
 
   if (loading) {
     return <Loading message="Loading character profile..." />
   }
 
   if (error) {
-    return <ErrorMessage message={error} onRetry={() => window.location.reload()} />
+    return <ErrorMessage message={error} onRetry={() => setRetryKey((current) => current + 1)} />
   }
 
   if (!character) {
@@ -71,7 +73,7 @@ export default function CharacterPage() {
         title="Character not found"
         message="This traveler does not exist in the current registry."
         actionLabel="Return home"
-        onAction={() => (window.location.href = '/')} 
+        onAction={() => navigate('/')}
       />
     )
   }

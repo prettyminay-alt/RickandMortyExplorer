@@ -1,10 +1,11 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import CharacterGrid from '../components/characters/CharacterGrid'
 import EmptyState from '../components/common/EmptyState'
 import { useFavorites } from '../hooks/useFavorites'
 
 export default function Favorites() {
   const { favorites } = useFavorites()
+  const navigate = useNavigate()
 
   return (
     <div className="favorites-page">
@@ -21,7 +22,7 @@ export default function Favorites() {
           title="No favorites yet"
           message="Bookmark your favorite characters from the Explorer and they will appear here."
           actionLabel="Return to explorer"
-          onAction={() => window.location.assign('/')}
+          onAction={() => navigate('/')}
         />
       ) : (
         <>
