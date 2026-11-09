@@ -1,9 +1,36 @@
 import { Heart, Home, Info, Rocket } from 'lucide-react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import SearchBar from '../characters/SearchBar'
 import { useFavorites } from '../../hooks/useFavorites'
 
 export default function Header() {
   const { count } = useFavorites()
+  const [searchParams] = useSearchParams()
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  const submitSearch = (searchInput) => {
+    const term = searchInput.trim()
+    const params = new URLSearchParams()
+
+    if (term) {
+      params.set('name', term)
+    }
+
+    navigate({
+      pathname: '/',
+      search: params.toString() ? `?${params.toString()}` : '',
+    })
+  }
+
+  const clearSearch = () => {
+    if (location.pathname === '/') {
+      navigate('/', { replace: true })
+      return
+    }
+
+    navigate('/')
+  }
 
   return (
     <header className="topbar">
@@ -14,6 +41,15 @@ export default function Header() {
           </span>
           Rick and Morty Explorer
         </NavLink>
+
+        <SearchBar
+          key={`${location.pathname}${location.search}`}
+          value={searchParams.get('name') || ''}
+          onSubmit={submitSearch}
+          onClear={clearSearch}
+          placeholder="Search characters..."
+          className="header-search"
+        />
 
         <nav className="main-nav" aria-label="Main navigation">
           <NavLink to="/" end>

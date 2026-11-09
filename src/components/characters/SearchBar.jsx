@@ -1,31 +1,47 @@
-export default function SearchBar({ value, onChange, onSubmit, onClear, placeholder = 'Search by name...' }) {
-  const submit = (event) => {
-    if (event.key === 'Enter') {
-      event.preventDefault()
-      onSubmit()
-    }
-  }
+import { useState } from 'react'
+
+export default function SearchBar({
+  value,
+  onSubmit,
+  onClear,
+  placeholder = 'Search by name...',
+  className = '',
+}) {
+  const [searchValue, setSearchValue] = useState(value)
 
   return (
-    <div className="search-bar">
+    <form
+      className={`search-bar ${className}`.trim()}
+      onSubmit={(event) => {
+        event.preventDefault()
+        onSubmit(searchValue)
+      }}
+      role="search"
+    >
       <input
         type="search"
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        onKeyDown={submit}
+        value={searchValue}
+        onChange={(event) => setSearchValue(event.target.value)}
         placeholder={placeholder}
-        aria-label="Search characters"
+        aria-label="Search characters by name"
       />
 
-      <button type="button" className="primary-button" onClick={onSubmit}>
+      <button type="submit" className="primary-button">
         Search
       </button>
 
-      {value ? (
-        <button type="button" className="secondary-button" onClick={onClear}>
+      {searchValue ? (
+        <button
+          type="button"
+          className="secondary-button"
+          onClick={() => {
+            setSearchValue('')
+            onClear()
+          }}
+        >
           Clear
         </button>
       ) : null}
-    </div>
+    </form>
   )
 }

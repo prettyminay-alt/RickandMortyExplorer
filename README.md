@@ -28,9 +28,9 @@ Rick and Morty Explorer is a responsive React single-page application that lets 
 - Vite
 - JavaScript ES6+
 - React Router DOM
+- Lucide React
 - Context API
 - localStorage
-- Lucide React
 - CSS3
 
 ## External API

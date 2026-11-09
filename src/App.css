@@ -26,7 +26,8 @@
 }
 
 .nav-shell {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(220px, 1fr) auto;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
@@ -58,6 +59,26 @@
   align-items: center;
   gap: 0.8rem;
   flex-wrap: wrap;
+  justify-self: end;
+}
+
+.header-search {
+  margin: 0;
+  flex-wrap: nowrap;
+  min-width: 0;
+}
+
+.header-search input {
+  min-width: 0;
+  padding: 0.65rem 0.85rem;
+  border-radius: 999px;
+}
+
+.header-search .primary-button,
+.header-search .secondary-button {
+  padding: 0.65rem 0.9rem;
+  border-radius: 999px;
+  white-space: nowrap;
 }
 
 .main-nav a {
@@ -668,6 +689,21 @@
 }
 
 @media (max-width: 840px) {
+  .nav-shell {
+    grid-template-columns: 1fr;
+    padding: 0.8rem 0;
+  }
+
+  .header-search {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .main-nav {
+    justify-self: start;
+    gap: 0.35rem;
+  }
+
   .filters-panel,
   .details-hero,
   .about-grid,

@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Database, SearchIcon, Sparkles, Zap } from 'lucide-react'
+import { useSearchParams } from 'react-router-dom'
+import { Database, Sparkles, Zap } from 'lucide-react'
 import CharacterFilters from '../components/characters/CharacterFilters'
 import CharacterGrid from '../components/characters/CharacterGrid'
-import SearchBar from '../components/characters/SearchBar'
 import EmptyState from '../components/common/EmptyState'
 import ErrorMessage from '../components/common/ErrorMessage'
 import Loading from '../components/common/Loading'
@@ -21,8 +21,8 @@ export default function Home() {
   const [pageInfo, setPageInfo] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  const [searchInput, setSearchInput] = useState('')
-  const [searchTerm, setSearchTerm] = useState('')
+  const [searchParams, setSearchParams] = useSearchParams()
+  const searchTerm = searchParams.get('name') || ''
   const [status, setStatus] = useState('all')
   const [species, setSpecies] = useState('all')
   const [gender, setGender] = useState('all')
@@ -80,14 +80,11 @@ export default function Home() {
     return current.sort(sorter)
   }, [characters, sortBy])
 
-  const applySearch = () => {
-    setSearchTerm(searchInput.trim())
-    setPage(1)
-  }
-
   const clearSearch = () => {
-    setSearchInput('')
-    setSearchTerm('')
+    setSearchParams({})
+    setStatus('all')
+    setSpecies('all')
+    setGender('all')
     setPage(1)
   }
 
@@ -149,19 +146,12 @@ export default function Home() {
 
       <section className="toolbar-panel card-panel">
         <div className="toolbar-header">
-          <div className="search-label-wrap">
-            <SearchIcon size={18} />
-            <span>Character Search</span>
+          <div>
+            <p className="eyebrow">Refine the archive</p>
+            <h2>Character Filters</h2>
           </div>
           <span className="meta-note">Sorting is applied to the currently displayed page.</span>
         </div>
-
-        <SearchBar
-          value={searchInput}
-          onChange={setSearchInput}
-          onSubmit={applySearch}
-          onClear={clearSearch}
-        />
 
         <CharacterFilters
           status={status}
@@ -183,7 +173,7 @@ export default function Home() {
         <EmptyState
           title="No matching characters found"
           message="Try a different search, or clear your filters to explore the full multiverse."
-          actionLabel="Clear filters"
+          actionLabel="Clear search and filters"
           onAction={clearSearch}
         />
       ) : (
