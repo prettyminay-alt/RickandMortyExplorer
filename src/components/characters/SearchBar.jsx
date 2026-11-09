@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Search, X } from 'lucide-react'
 
 export default function SearchBar({
   value,
@@ -18,28 +19,34 @@ export default function SearchBar({
       }}
       role="search"
     >
-      <input
-        type="search"
-        value={searchValue}
-        onChange={(event) => setSearchValue(event.target.value)}
-        placeholder={placeholder}
-        aria-label="Search characters by name"
-      />
+      <label className="search-input-wrap">
+        <Search size={18} aria-hidden="true" />
+        <input
+          type="search"
+          value={searchValue}
+          onChange={(event) => setSearchValue(event.target.value)}
+          placeholder={placeholder}
+          aria-label="Search characters by name"
+        />
+      </label>
 
       <button type="submit" className="primary-button">
-        Search
+        <Search size={16} aria-hidden="true" />
+        <span>Search</span>
       </button>
 
       {searchValue ? (
         <button
           type="button"
-          className="secondary-button"
+          className="search-clear-button"
+          aria-label="Clear search"
+          title="Clear search"
           onClick={() => {
             setSearchValue('')
             onClear()
           }}
         >
-          Clear
+          <X size={17} aria-hidden="true" />
         </button>
       ) : null}
     </form>

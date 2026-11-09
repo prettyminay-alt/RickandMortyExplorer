@@ -27,10 +27,9 @@
 
 .nav-shell {
   display: grid;
-  grid-template-columns: auto minmax(220px, 1fr) auto;
+  grid-template-columns: minmax(max-content, 1fr) minmax(280px, 440px) minmax(max-content, 1fr);
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+  gap: clamp(0.75rem, 2vw, 1.75rem);
   min-height: 80px;
 }
 
@@ -64,21 +63,76 @@
 
 .header-search {
   margin: 0;
-  flex-wrap: nowrap;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 0.5rem;
   min-width: 0;
+  width: 100%;
 }
 
-.header-search input {
+.search-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
   min-width: 0;
-  padding: 0.65rem 0.85rem;
+  height: 46px;
+  padding: 0 0.9rem;
+  color: var(--muted);
+  background: rgba(24, 33, 45, 0.9);
+  border: 1px solid var(--border);
   border-radius: 999px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-input-wrap:focus-within {
+  border-color: rgba(151, 206, 76, 0.6);
+  box-shadow: 0 0 0 3px rgba(151, 206, 76, 0.15);
+}
+
+.header-search .search-input-wrap input {
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  color: var(--text);
+  background: transparent;
+  border: 0;
+  outline: 0;
+  box-shadow: none;
+}
+
+.header-search .search-input-wrap input:focus {
+  border: 0;
+  outline: 0;
+  box-shadow: none;
 }
 
 .header-search .primary-button,
-.header-search .secondary-button {
-  padding: 0.65rem 0.9rem;
+.header-search .search-clear-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  height: 46px;
+  padding: 0 1rem;
   border-radius: 999px;
   white-space: nowrap;
+}
+
+.header-search .search-clear-button {
+  width: 46px;
+  padding: 0;
+  color: var(--muted);
+  background: rgba(24, 33, 45, 0.9);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.header-search .search-clear-button:hover {
+  color: var(--text);
+  border-color: rgba(248, 113, 113, 0.45);
+  background: rgba(248, 113, 113, 0.1);
 }
 
 .main-nav a {
@@ -723,13 +777,24 @@
     grid-template-columns: 1fr;
   }
 
-  .search-bar {
-    align-items: stretch;
+  .header-search {
+    grid-template-columns: minmax(0, 1fr) auto auto;
   }
 
-  .search-bar input,
-  .search-bar .primary-button,
-  .search-bar .secondary-button {
-    width: 100%;
+  .header-search .primary-button {
+    width: auto;
+  }
+
+  .header-search .primary-button span {
+    display: none;
+  }
+
+  .header-search .search-clear-button {
+    width: 42px;
+    height: 42px;
+  }
+
+  .search-input-wrap {
+    height: 42px;
   }
 }
