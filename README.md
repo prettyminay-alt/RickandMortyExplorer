@@ -33,6 +33,9 @@ Rick and Morty Explorer is a responsive React single-page application that lets 
 - Official API: https://rickandmortyapi.com/api
 - Documentation: https://rickandmortyapi.com/documentation
 
+## Application Screenshots
+The project includes a dark sci-fi dashboard, searchable character cards, favorites tracking, and a detailed character profile view. Add screenshots here after publishing the repository to GitHub.
+
 ## Folder Structure
 ```text
 src/
@@ -89,6 +92,15 @@ The project follows a feature-branch workflow:
 4. Open a pull request
 5. Review and resolve conflicts before merging
 6. Keep main stable and functional
+
+## GitHub Setup
+After creating a public GitHub repository, add the remote and push the branches:
+```bash
+git remote add origin https://github.com/your-username/rick-and-morty-explorer.git
+git push -u origin main
+git push -u origin feature/api-integration
+git push -u origin feature/character-search
+```
 
 ## Example Git Commands
 ```bash
