@@ -1,6 +1,7 @@
 import { ArrowLeft, CalendarRange, ExternalLink, Heart, MapPin, ShieldCheck, UserRound } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import FavoriteButton from './FavoriteButton'
+import CharacterImage from './CharacterImage'
 
 export default function CharacterDetails({ character, episodes = [], episodesError = '', onRetryEpisodes }) {
   if (!character) {
@@ -10,7 +11,7 @@ export default function CharacterDetails({ character, episodes = [], episodesErr
   return (
     <div className="details-layout">
       <div className="details-hero card-panel">
-        <img src={character.image} alt={character.name} className="details-image" />
+        <CharacterImage src={character.image} alt={character.name} className="details-image" />
 
         <div className="details-copy">
           <div className="details-header-row">

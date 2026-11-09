@@ -1,12 +1,13 @@
 import { Link } from 'react-router-dom'
 import { ArrowUpRight, BadgeInfo } from 'lucide-react'
 import FavoriteButton from './FavoriteButton'
+import CharacterImage from './CharacterImage'
 
 export default function CharacterCard({ character }) {
   return (
     <article className="character-card">
       <div className="card-image-wrap">
-        <img src={character.image} alt={character.name} className="card-image" />
+        <CharacterImage src={character.image} alt={character.name} className="card-image" />
         <span className={`status-pill ${character.status?.toLowerCase() || 'unknown'}`}>
           {character.status}
         </span>

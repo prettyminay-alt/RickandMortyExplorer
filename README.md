@@ -17,9 +17,11 @@ Rick and Morty Explorer is a responsive React single-page application that lets 
 - API-based pagination controls
 - Character detail page with episode metadata
 - Character and episode source API records linked from the detail view
+- Character profiles include ID, status, species, type, gender, origin, current location, creation date, and episode records
 - Favorites tracking with localStorage persistence
 - Responsive layout for desktop, tablet, and mobile devices
 - Loading, retryable error, and empty-result states
+- Local image fallback for avatars that fail to load
 
 ## Technologies Used
 - React
